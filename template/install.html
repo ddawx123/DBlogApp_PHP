@@ -1,0 +1,97 @@
+<!doctype html>
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="keywords" content="B/S应用系统部署向导" />
+  <meta name="description" content="B/S应用系统部署向导">
+  <title>B/S应用系统部署向导</title>
+</head>
+<body>
+  <div id="header" align="center">
+    <h1>B/S应用系统部署向导</h1>
+    <h5>注意：我们检测到您首次运行本系统，需要初始化数据库以及相关配置信息！</h2>
+  </div>
+  <div id="content" align="center">
+    <h3>请提供以下信息并提交，系统将自动收集验证并执行初始化安装。</h3>
+    <hr>
+    <label for="sqlsrv_address">数据库服务器地址：</label>
+    <input type="text" id="sqlsrv_address" placeholder="键入数据库服务器地址" />
+    <br>
+    <label for="sqlsrv_usrinfo">数据库服务器账号：</label>
+    <input type="text" id="sqlsrv_usrinfo" placeholder="键入数据库账号" />
+    <br>
+    <label for="sqlsrv_pwdinfo">数据库服务器密码：</label>
+    <input type="password" id="sqlsrv_pwdinfo" placeholder="键入数据库密码" />
+    <br>
+    <label for="sqlsrv_mdbinfo">数据库表目标名称：</label>
+    <input type="text" id="sqlsrv_mdbinfo" placeholder="键入数据库名称" />
+    <hr>
+    <input type="button" id="btnSubmit" value="立即提交并初始化" />
+  </div>
+  <div id="footer" align="center" style="filter: alpha(Opacity=80);-moz-opacity: 0.5;opacity: 0.5;position: absolute;bottom: 0;left: 0;height: 20px;width: 100%;background-color: #000000;color: #ffffff">&copy; 2012-2017 DingStudio All Rights Reserved</div>
+  <script>
+      document.getElementById('btnSubmit').onclick = function() {
+        postSubmit();
+      };
+      function postSubmit() {
+        if (!confirm('本系统目前暂时仅支持MySQL数据库，请确保您填写的信息正确！如需修改，请点击取消。注意：一经提交，后期修改需登录服务器手动操作。')) {
+          return false;
+        }
+        var sqlsrv = document.getElementById('sqlsrv_address').value;
+        var sqlusr = document.getElementById('sqlsrv_usrinfo').value;
+        var sqlpwd = document.getElementById('sqlsrv_pwdinfo').value;
+        var sqlmdb = document.getElementById('sqlsrv_mdbinfo').value;
+        if (sqlsrv == '' || sqlusr == '' || sqlpwd == '' || sqlmdb == '') {
+          alert('配置信息不能有任一项目为空，请补全后重试！');
+          return false;
+        }
+        var xhr;
+        if (window.XMLHttpRequest) {
+          xhr = new XMLHttpRequest();
+        }
+        else {
+          xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+              var data = eval("(" + xhr.responseText + ")");
+              if (data.code == 200) {
+                alert('操作成功结束！即将为您刷新页面。');
+                location.reload();
+              }
+              else if (data.code == 405) {
+                alert('服务器不可接受的数据类型，可能是由于您的浏览器编码兼容问题所致！建议更换最新的浏览器再次尝试。');
+                return false;
+              }
+              else {
+                alert('数据写入失败，可能是服务器忙碌或您的网站空间处于只读状态！请核查这些问题后再次尝试。');
+                return false;
+              }
+            }
+            else if (xhr.status == 404) {
+              alert('数据写入失败，无法启动初始化程序！可能您的网站已在其他浏览器完成了初始化，即将为您刷新过期页面。');
+              location.reload();
+              return false;
+            }
+            else if (xhr.status == 500) {
+              alert('抱歉，服务器忙碌或配置存在异常！如果该现象多次出现，请联系站点管理员。');
+              return false;
+            }
+            else {
+              alert('发生未知错误，错误代码：' + xhr.status + '。请将此错误代码提供给软件开发者作进一步分析！');
+              return false;
+            }
+          }
+        }
+        xhr.open('POST', './process.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('sqlsrv=' + sqlsrv + '&sqlusr=' + sqlusr + '&sqlpwd=' + sqlpwd + '&sqlmdb=' + sqlmdb);
+      }
+  </script>
+</body>
+</html>
