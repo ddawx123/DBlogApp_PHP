@@ -51,7 +51,7 @@ class API {
             case 'auth/login':
             break;
             case 'auth/register':
-            if (!isset($_POST['data']) {
+            if (!isset($_POST['data'])) {
                 die(self::buildJSON(-2, 'Sorry, the invalid data was sended.', null));
             }
             $reg_data = json_decode($_POST['data']);
