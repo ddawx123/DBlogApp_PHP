@@ -14,7 +14,7 @@ class Tpl {
      * @param array $tplList 模板文件集合
      */
     private function Load($tplList = null) {
-        require(APP_PATH.'library/global.class.php');
+        require(APP_PATH.'library/global.inc.php');
         $tplPath = dirname(__FILE__).'/../template/';
         if ($tplList == null || !is_array($tplList)) {
             header('Content-Type: text/plain; Charset=UTF-8');
