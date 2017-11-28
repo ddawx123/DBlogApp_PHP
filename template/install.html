@@ -30,6 +30,16 @@
     <label for="sqlsrv_mdbinfo">数据库表目标名称：</label>
     <input type="text" id="sqlsrv_mdbinfo" placeholder="键入数据库名称" />
     <hr>
+    <h3>其他信息设置</h3>
+    <label for="blog_name">博客名称：</label>
+    <input type="text" id="blog_name" placeholder="键入博客名称" />
+    <br>
+    <label for="blog_description">博客简介：</label>
+    <input type="text" id="blog_description" placeholder="键入博客简介" />
+    <br>
+    <label for="blog_author">站长昵称：</label>
+    <input type="text" id="blog_author" placeholder="键入站长昵称" />
+    <hr>
     <input type="button" id="btnSubmit" value="立即提交并初始化" />
   </div>
   <div id="footer" align="center" style="filter: alpha(Opacity=80);-moz-opacity: 0.5;opacity: 0.5;position: absolute;bottom: 0;left: 0;height: 20px;width: 100%;background-color: #000000;color: #ffffff">&copy; 2012-2017 DingStudio All Rights Reserved</div>
@@ -45,7 +55,10 @@
         var sqlusr = document.getElementById('sqlsrv_usrinfo').value;
         var sqlpwd = document.getElementById('sqlsrv_pwdinfo').value;
         var sqlmdb = document.getElementById('sqlsrv_mdbinfo').value;
-        if (sqlsrv == '' || sqlusr == '' || sqlpwd == '' || sqlmdb == '') {
+        var name = document.getElementById('blog_name').value;
+        var description = document.getElementById('blog_description').value;
+        var author = document.getElementById('blog_author').value;
+        if (sqlsrv == '' || sqlusr == '' || sqlpwd == '' || sqlmdb == '' || name == '' || description == '' || author == '') {
           alert('配置信息不能有任一项目为空，请补全后重试！');
           return false;
         }
@@ -90,7 +103,7 @@
         }
         xhr.open('POST', './process.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.send('sqlsrv=' + sqlsrv + '&sqlusr=' + sqlusr + '&sqlpwd=' + sqlpwd + '&sqlmdb=' + sqlmdb);
+        xhr.send('sqlsrv=' + sqlsrv + '&sqlusr=' + sqlusr + '&sqlpwd=' + sqlpwd + '&sqlmdb=' + sqlmdb + '&blog_name=' + name + '&blog_description=' + description + '&blog_author=' + author);
       }
   </script>
 </body>

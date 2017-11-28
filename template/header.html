@@ -10,18 +10,18 @@
   <link href="static/fonts/gfonts.css" rel="stylesheet" type="text/css">
   <link href="static/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
   <link href="static/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-  <meta name="keywords" content="<?php echo $blog_keywords; ?>" />
-  <link rel="alternate" href="static/atom.xml" title="<?php echo $blog_title; ?>" type="application/atom+xml" />
+  <meta name="keywords" content="<?php echo $dcp['blog_title']; ?>" />
+  <link rel="alternate" href="static/atom.xml" title="<?php echo $dcp['blog_title']; ?>" type="application/atom+xml" />
   <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico?v=5.0.1" />
-  <meta name="description" content="<?php echo $blog_desc; ?>">
+  <meta name="description" content="<?php echo $dcp['blog_title']; ?>">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="<?php echo $blog_title; ?>">
+  <meta property="og:title" content="<?php echo $dcp['blog_title']; ?>">
   <meta property="og:url" content="http://w.dingstudio.cn/index.html">
-  <meta property="og:site_name" content="<?php echo $blog_title; ?>">
-  <meta property="og:description" content="<?php echo $blog_desc; ?>">
+  <meta property="og:site_name" content="<?php echo $dcp['blog_title']; ?>">
+  <meta property="og:description" content="<?php echo $dcp['blog_desc']; ?>">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="<?php echo $blog_title; ?>">
-  <meta name="twitter:description" content="<?php echo $blog_desc; ?>">
+  <meta name="twitter:title" content="<?php echo $dcp['blog_title']; ?>">
+  <meta name="twitter:description" content="<?php echo $dcp['blog_desc']; ?>">
   <script type="text/javascript" id="hexo.configuration">
     var NexT = window.NexT || {};
     var CONFIG = {
@@ -31,7 +31,7 @@
       motion: true
     };
   </script>
-  <title><?php echo $blog_title; ?></title>
+  <title><?php echo $dcp['blog_title']; ?></title>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
   <div class="container one-collumn sidebar-position-left page-home">
@@ -44,13 +44,13 @@
               <span class="logo-line-before">
                 <i></i>
               </span>
-              <span class="site-title"><?php echo $blog_title; ?></span>
+              <span class="site-title"><?php echo $dcp['blog_title']; ?></span>
               <span class="logo-line-after">
                 <i></i>
               </span>
             </a>
           </div>
-          <p class="site-subtitle"><?php echo $blog_desc; ?></p>
+          <p class="site-subtitle"><?php echo $dcp['blog_title']; ?></p>
         </div>
         <div class="site-nav-toggle">
           <button>

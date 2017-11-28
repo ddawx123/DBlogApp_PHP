@@ -9,16 +9,46 @@
 
 class Base {
 
+    static private $_instance = null; // 定义空实例
+
+    /**
+     * 构造函数
+     */
+    private function __construct() {
+        header('Product: DingStudio Cloud Platform');
+        $this->checkConf(); //开箱即用拦截器（OOBE）
+        if (!defined('APP_PATH')) { //判断APP_PATH常量是否在入口文件正确定义
+            header('Content-Type: text/plain; Charset=UTF-8');
+            echo '非常抱歉，由于您的应用程序未被正确配置，现无法启动。技术支持信息显示如下：Before you load base class, please set the APP_PATH constant first.';
+            exit();
+        }
+        if (!session_id()) { //按需全局启用Session机制
+            session_start();
+        }
+        require_once(APP_PATH.'library/global.inc.php'); //载入全局函数模块
+    }
+
+    /**
+     * 统一预留实例化入口
+     * @return instance 实例化对象
+     */
+    public static function getInstance() {
+        if (!(self::$_instance instanceof self)) {
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+
     /**
      * 全局初始化
      * @param string $mod 启动方式
      */
     public function Load($mod = 'view') {
-        $this->checkConf();
         switch ($mod) {
             case 'view':
-            //TODO Something
-            $Model->View();
+            require_once(APP_PATH.'library/template.class.php');
+            $view = new Tpl();
+            $view->initView();
             break;
             case 'api':
             require_once(APP_PATH.'library/api.class.php');
@@ -35,6 +65,7 @@ class Base {
      */
     private function checkConf() {
         if (!file_exists(APP_PATH.'data/config.json')) {
+            header('Content-Type: text/html; Charset=UTF-8');
             include(APP_PATH.'template/install.html');
             exit();
         }

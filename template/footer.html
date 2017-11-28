@@ -9,9 +9,9 @@
   <div class="sidebar-inner">
     <section class="site-overview sidebar-panel  sidebar-panel-active ">
       <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-        <img class="site-author-image" itemprop="image" src="<?php echo $blog_author_logo; ?>" alt="<?php echo $blog_author; ?>" />
-        <p class="site-author-name" itemprop="name"><?php echo $blog_author; ?></p>
-        <p class="site-description motion-element" itemprop="description"><?php echo $blog_title; ?>|<?php echo $blog_desc; ?></p>
+        <img class="site-author-image" itemprop="image" src="static/images/logo.png" alt="<?php echo $dcp['blog_author']; ?>" />
+        <p class="site-author-name" itemprop="name"><?php echo $dcp['blog_author']; ?></p>
+        <p class="site-description motion-element" itemprop="description"><?php echo $dcp['blog_title']; ?>|<?php echo $dcp['blog_desc']; ?></p>
       </div>
       <nav class="site-state motion-element">
         <div class="site-state-item site-state-posts">
@@ -44,12 +44,12 @@
 <footer id="footer" class="footer">
   <div class="footer-inner">
     <div class="copyright">
-      &copy; <?php echo $upTime; ?> -
+      &copy; <?php echo $dcp['upTime']; ?> -
       <span itemprop="copyrightYear"><?php echo date('Y',time()); ?></span>
       <span class="with-love">
         <i class="fa fa-heart"></i>
       </span>
-      <span class="author" itemprop="copyrightHolder"><?php echo $blog_author; ?></span>
+      <span class="author" itemprop="copyrightHolder"><?php echo $dcp['blog_author']; ?></span>
     </div>
     <div class="powered-by">
       由

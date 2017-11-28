@@ -37,7 +37,7 @@ class API {
      * 请求路由
      */
     public function Router() {
-        header('Content-Type: application/json; Charset=UTF-8'); // 设置全局Http会话头为JSON模式
+        header('Content-Type: application/json; Charset=UTF-8'); //设置全局Http会话头为JSON模式
         if (!isset($_REQUEST['action'])) {
             die(self::buildJSON(-2, 'Sorry, the invalid application interface method was called.', null));
         }
@@ -45,21 +45,80 @@ class API {
             case 'getArticle':
             break;
             case 'getUser':
-            $result = DB::getInstance()->query('select * from member');
+            $result = DB::getInstance()->QueryData('select * from member');
             die(self::buildJSON(0, 'OK', $result));
             break;
             case 'auth/login':
+            self::user_login();
             break;
             case 'auth/register':
-            if (!isset($_POST['data'])) {
-                die(self::buildJSON(-2, 'Sorry, the invalid data was sended.', null));
-            }
-            $reg_data = json_decode($_POST['data']);
-            if ($reg_data['username'] == null)
+            self::user_register();
             break;
             default:
             die(self::buildJSON(-2, 'Sorry, the invalid application interface method was called.', null));
             break;
+        }
+    }
+
+    /**
+     * 用户登录过程实现
+     */
+    private function user_login() {
+        if (!isset($_POST['data'])) {
+            die(self::buildJSON(-3, 'Sorry, the invalid data was sended.', null));
+        }
+        $reg_data = json_decode($_POST['data']);
+        if (@$reg_data->uname == null || @$reg_data->upswd == null) {
+            die(self::buildJSON(-5, 'Illegal configuration information.', null));
+        }
+        else {
+            $uname = @$reg_data->uname;
+            $upswd = sha1(@$reg_data->upswd);
+        }
+        $result = DB::getInstance()->QueryData('select * from member where username="'.$uname.'" and userpwd="'.$upswd.'"');
+        if ($result) {
+            $token = md5($uname.$upswd.date('YmdH',time())); //通过相关信息合成AccessToken（有效期1小时）
+            $result = DB::getInstance()->QueryResult('update member set usertoken="'.$token.'" where username="'.$uname.'" and userpwd="'.$upswd.'"'); //更新AccessToken到数据库
+            if ($result <= 0) { //判断AccessToken更新结果，如果更新失败则拦截登录过程
+                die(self::buildJSON(-8, 'Operation timeout, please try again later.', null));
+            }
+            $_SESSION['username'] = $uname; //存储明文用户名到session
+            $_SESSION['token'] = $token; //存储原始token到session
+            setcookie("username", sha1($uname), time() + 3600,  "/", $_SERVER['HTTP_HOST']); //存储密文用户名到cookie
+            setcookie("token", sha1($token), time() + 3600,  "/", $_SERVER['HTTP_HOST']); //存储二次加密的token到cookie
+            die(self::buildJSON(0, 'Welcome back, '.$uname.'.', null)); //返回登录成功的json消息
+        }
+        else {
+            die(self::buildJSON(-1, 'Invaild username or password, please check it again and change something.', null)); //返回登录失败的json消息
+        }
+    }
+
+    /**
+     * 用户注册过程实现
+     */
+    private function user_register() {
+        if (!isset($_POST['data'])) {
+            die(self::buildJSON(-3, 'Sorry, the invalid data was sended.', null));
+        }
+        $reg_data = json_decode($_POST['data']);
+        if (@$reg_data->uname == null || @$reg_data->upswd == null || @$reg_data->email == null) {
+            die(self::buildJSON(-5, 'Illegal configuration information.', null));
+        }
+        else {
+            $uname = @$reg_data->uname;
+            $upswd = sha1(@$reg_data->upswd);
+            $email = @$reg_data->email;
+        }
+        $result = DB::getInstance()->QueryData('select * from member where username="'.$uname.'" or usermail="'.$email.'"');
+        if ($result) {
+            die(self::buildJSON(-10, 'Sorry, this username or e-mail has already existed.', null));
+        }
+        $result = DB::getInstance()->QueryResult('insert into member (username,userpwd,usermail) values ("'.$uname.'","'.$upswd.'","'.$email.'")');
+        if ($result > 0) {
+            die(self::buildJSON(0, 'Well, the account was successfully created.', null));
+        }
+        else {
+            die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
         }
     }
 
@@ -71,15 +130,6 @@ class API {
      * @return string JSON字符串
      */
     private function buildJSON($code = 0, $message = '', $data = null) {
-        if ($data == null) {
-            $arr = array(
-                'code'  =>  -1,
-                'message'   =>  'Sorry, this application interface does not return any valid data.',
-                'data'  =>  null,
-                'requestId' =>  $this->runtime
-            );
-            return json_encode($arr,JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES);
-        }
         $arr = array(
             'code'  =>  $code,
             'message'   =>  $message,

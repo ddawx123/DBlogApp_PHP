@@ -4,6 +4,6 @@ define('APP_PATH',dirname(__FILE__).'/');
 // 导入基类设置全局运行环境
 require_once(APP_PATH.'library/base.class.php');
 // 实例化基类
-$App = new Base();
+$App = Base::getInstance();
 // 调用基类Api Launcher
 $App->Load('api');

@@ -2,7 +2,7 @@
 // 初始化应用目录全局变量
 define('APP_PATH',dirname(__FILE__).'/');
 
-if (!isset($_POST['sqlsrv']) || !isset($_POST['sqlusr']) || !isset($_POST['sqlpwd']) || !isset($_POST['sqlmdb'])) {
+if (!isset($_POST['sqlsrv']) || !isset($_POST['sqlusr']) || !isset($_POST['sqlpwd']) || !isset($_POST['sqlmdb']) || !isset($_POST['blog_name']) || !isset($_POST['blog_description']) || !isset($_POST['blog_author'])) {
     $arr = array(
         'code'  =>  405,
         'message'   =>  '无效参数'
@@ -14,7 +14,19 @@ else {
         'sqlsrv'    =>  $_POST['sqlsrv'],
         'sqlusr'    =>  $_POST['sqlusr'],
         'sqlpwd'    =>  $_POST['sqlpwd'],
-        'sqlmdb'    =>  $_POST['sqlmdb']
+        'sqlmdb'    =>  $_POST['sqlmdb'],
+        'bloginfo'  =>  array(
+            'blog_name'  => $_POST['blog_name'],
+            'blog_description'  =>  $_POST['blog_description'],
+            'blog_author'   =>  $_POST['blog_author']
+        ),
+        'SSO'   =>  array(
+            'cas_server_addr'    =>  'cas.example.org',
+            'cas_server_port'   =>  80,
+            'cas_server_path'   =>  'cas',
+            'cas_server_auth'   =>  false
+        ),
+        'buildTime' =>  date('YmdHis',time())
     );
     $result = file_put_contents(APP_PATH.'data/config.json', json_encode($config));
     if (!$result) {

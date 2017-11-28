@@ -44,11 +44,11 @@ class DB {
     }
 
     /**
-     * 数据库查询语句的执行与返回过程
+     * 数据库查询语句的执行与数据返回过程
      * @param string $sqlcode 数据库SQL查询语句
      * @return array 数据集合
      */
-    public function query($sqlcode) {
+    public function QueryData($sqlcode) {
         if (!self::$_sqlcon) {
             self::$_sqlcon = self::connect();
         }
@@ -59,6 +59,24 @@ class DB {
         }
         else {
             return $data;
+        }
+    }
+
+    /**
+     * 数据库查询语句的执行与结果标识返回过程
+     * @param string $sqlcode 数据库SQL查询语句
+     * @return array 数据集合
+     */
+    public function QueryResult($sqlcode) {
+        if (!self::$_sqlcon) {
+            self::$_sqlcon = self::connect();
+        }
+        $result = self::$_sqlcon->query($sqlcode);
+        if (!$result) {
+            return 0;
+        }
+        else {
+            return 1;
         }
     }
 
