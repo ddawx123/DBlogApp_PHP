@@ -41,30 +41,78 @@ class Tpl {
      */
     public function initView() {
         if (!isset($_REQUEST['c'])) {
-            $tplList = array('header.html','home.html','footer.html');
-            self::Load($tplList);
+            self::Load(
+                array(
+                    'header.html',
+                    'home.html',
+                    'footer.html'
+                )
+            );
         }
         else {
             switch (@$_REQUEST['c']) {
                 case 'detail':
                 break;
                 case 'manager':
+                if (!isset($_SESSION['username']) || !isset($_SESSION['token']) || !isset($_COOKIE['username']) || !isset($_COOKIE['token']) || $_COOKIE['username'] != sha1($_SESSION['username']) || $_COOKIE['token'] != sha1($_SESSION['token'])) {
+                    Base::redirect('./index.php?c=login&callback='.urlencode($_SERVER['REQUEST_URI']),0);
+                }
+                self::Load(
+                    array(
+                        'header.html',
+                        'manager.html',
+                        'footer.html'
+                    )
+                );
                 break;
                 case 'register':
-                $tplList = array('register.html');
-                self::Load($tplList);
+                self::Load(
+                    array(
+                        'register.html'
+                    )
+                );
                 break;
                 case 'login':
+                if (!isset($_SESSION['username']) || !isset($_SESSION['token']) || !isset($_COOKIE['username']) || !isset($_COOKIE['token']) || $_COOKIE['username'] != sha1($_SESSION['username']) || $_COOKIE['token'] != sha1($_SESSION['token'])) {
+                    self::Load(
+                        array(
+                            'header.html',
+                            'login.html',
+                            'footer.html'
+                        )
+                    );
+                }
+                else {
+                    Base::redirect('./index.php?c=index',0);
+                }
+                break;
+                case 'logout':
+                session_destroy();
+                session_write_close();
+                Base::redirect('./index.php?c=login',0);
                 break;
                 case 'findpwd':
                 break;
                 case 'index':
-                $tplList = array('header.html','home.html','footer.html');
-                self::Load($tplList);
+                self::Load(
+                    array(
+                        'header.html',
+                        'home.html',
+                        'footer.html'
+                    )
+                );
                 break;
                 case 'notfound':
+                self::Load(
+                    array(
+                        'header.html',
+                        '404.html',
+                        'footer.html'
+                    )
+                );
                 break;
                 default:
+                Base::redirect('./index.php?c=notfound',0);
                 break;
             }
         }

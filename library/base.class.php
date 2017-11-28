@@ -76,13 +76,13 @@ class Base {
      * @param string $url URL字串
      * @return boolean 响应结果
      */
-    public function redirect($url = null) {
+    public static function redirect($url = null, $timeout = 1) {
         if ($url == null) {
             return false;
         }
         else {
             header('Content-Type: text/plain; Charset=UTF-8');
-            header('refresh:1; url='.$url);
+            header('refresh:'.$timeout.'; url='.$url);
             echo 'Redirecting now, please wait ...';
             return true;
         }

@@ -56,7 +56,7 @@
         }
         else {
           var json = '{"uname":"' + user + '","upswd":"' + MD5(pswd2) + '","email":"' + u_mail + '"}';
-          console.log(json);
+          //console.log(json);
         }
         var xhr;
         if (window.XMLHttpRequest) {
@@ -69,15 +69,23 @@
           if (xhr.readyState == 4) {
             if (xhr.status == 200) {
               var data = eval("(" + xhr.responseText + ")");
-              if (data.code == 200) {
+              if (data.code == 0) {
+                console.log(data.message);
                 alert('恭喜您，注册成功！即将为您刷新页面。');
-                location.reload();
+                location.href = './index.php?c=login';
               }
-              else if (data.code == 405) {
+              else if (data.code == -10) {
+                console.log(data.message);
+                alert('抱歉，您填写的用户名或邮箱已存在！请使用原账号登录或使用新邮箱与用户名注册一个新账户。');
+                return false;
+              }
+              else if (data.code == -3 || data.code == -5) {
+                console.log(data.message);
                 alert('服务器不可接受的数据类型，可能是由于您的浏览器编码兼容问题所致！建议更换最新的浏览器再次尝试。');
                 return false;
               }
               else {
+                console.log(data.message);
                 alert('数据写入失败，可能是数据中心忙碌或您的数据库空间处于只读状态！请核查这些问题后再次尝试。');
                 return false;
               }
