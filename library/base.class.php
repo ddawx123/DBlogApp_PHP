@@ -54,7 +54,13 @@ class Base {
             require_once(APP_PATH.'library/api.class.php');
             API::getInstance()->Router();
             break;
+            case 'ueditor':
+            require_once(APP_PATH.'library/ueditor.class.php');
+            Ueditor::getInstance()->Load();
+            break;
             default:
+            header('Content-Type: text/plain; Charset=UTF-8');
+            echo 'Exception: Could not fount this request router, please try again later.';
             break;
         }
     }
@@ -84,6 +90,18 @@ class Base {
             header('Content-Type: text/plain; Charset=UTF-8');
             header('refresh:'.$timeout.'; url='.$url);
             echo 'Redirecting now, please wait ...';
+            return true;
+        }
+    }
+
+    /**
+     * 检查用户是否已经登录
+     */
+    public static function isLogin() {
+        if (!isset($_SESSION['username']) || !isset($_SESSION['token']) || !isset($_COOKIE['username']) || !isset($_COOKIE['token']) || $_COOKIE['username'] != sha1($_SESSION['username']) || $_COOKIE['token'] != sha1($_SESSION['token'])) {
+            return false;
+        }
+        else {
             return true;
         }
     }

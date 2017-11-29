@@ -54,14 +54,12 @@ class Tpl {
                 case 'detail':
                 break;
                 case 'manager':
-                if (!isset($_SESSION['username']) || !isset($_SESSION['token']) || !isset($_COOKIE['username']) || !isset($_COOKIE['token']) || $_COOKIE['username'] != sha1($_SESSION['username']) || $_COOKIE['token'] != sha1($_SESSION['token'])) {
+                if (!Base::getInstance()->isLogin()) {
                     Base::redirect('./index.php?c=login&callback='.urlencode($_SERVER['REQUEST_URI']),0);
                 }
                 self::Load(
                     array(
-                        'header.html',
-                        'manager.html',
-                        'footer.html'
+                        'manager.html'
                     )
                 );
                 break;
@@ -73,7 +71,7 @@ class Tpl {
                 );
                 break;
                 case 'login':
-                if (!isset($_SESSION['username']) || !isset($_SESSION['token']) || !isset($_COOKIE['username']) || !isset($_COOKIE['token']) || $_COOKIE['username'] != sha1($_SESSION['username']) || $_COOKIE['token'] != sha1($_SESSION['token'])) {
+                if (!Base::getInstance()->isLogin()) {
                     self::Load(
                         array(
                             'header.html',
@@ -87,9 +85,14 @@ class Tpl {
                 }
                 break;
                 case 'logout':
-                session_destroy();
-                session_write_close();
-                Base::redirect('./index.php?c=login',0);
+                if (Base::getInstance()->isLogin()) {
+                    session_destroy();
+                    session_write_close();
+                    Base::redirect('./index.php?c=login',0);
+                }
+                else {
+                    Base::redirect('./index.php?c=index',0);
+                }
                 break;
                 case 'findpwd':
                 break;

@@ -43,16 +43,78 @@ class API {
         }
         switch($_REQUEST['action']) {
             case 'getArticle':
+            $result = DB::getInstance()->QueryData('select * from article');
+            die(self::buildJSON(0, 'OK', $result));
             break;
             case 'getUser':
+            if (!Base::getInstance()->isLogin()) {
+                die(self::buildJSON(-1, 'Please login and try again later.', null));
+            }
             $result = DB::getInstance()->QueryData('select * from member');
             die(self::buildJSON(0, 'OK', $result));
             break;
+            case 'Template':
+            if (!isset($_POST['Tpl'])) {
+                die('无效的模板文件！');
+            }
+            else {
+                switch ($_POST['Tpl']) {
+                    case 'postmgr':
+                    echo file_get_contents(APP_PATH.'template/inc/postmgr.html');
+                    break;
+                    case 'classmgr':
+                    echo file_get_contents(APP_PATH.'template/inc/classmgr.html');
+                    break;
+                    case 'dashboard':
+                    echo file_get_contents(APP_PATH.'template/inc/dashboard.html');
+                    break;
+                    default:
+                    break;
+                }
+            }
+            break;
             case 'auth/login':
+            if (Base::getInstance()->isLogin()) {
+                die(self::buildJSON(-12, 'Please logout and try again later.', null));
+            }
             self::user_login();
             break;
             case 'auth/register':
+            if (Base::getInstance()->isLogin()) {
+                die(self::buildJSON(-12, 'Please logout and try again later.', null));
+            }
             self::user_register();
+            break;
+            case 'post/update':
+            if (!Base::getInstance()->isLogin()) {
+                die(self::buildJSON(-1, 'Please login and try again later.', null));
+            }
+            if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['aid'])) {
+                die(self::buildJSON(-30, 'Sorry, the invalid article data was sended.', null));
+            }
+            else {
+                if ($_POST['title'] == '' || $_POST['content'] == '') {
+                    die(self::buildJSON(-31, 'Illegal article data.', null));
+                }
+                else if ($_POST['aid'] == '0') {
+                    $result = DB::getInstance()->QueryResult('insert into article (title,content,class,ptime,status) values ("'.$_POST['title'].'","'.$_POST['content'].'",1,"'.date('Y-m-d H:i:s',time()).'",1)');
+                    if ($result > 0) {
+                        die(self::buildJSON(0, 'Well, the article was successfully created.', null));
+                    }
+                    else {
+                        die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
+                    }
+                }
+                else {
+                    $result = DB::getInstance()->QueryResult('update article set title="'.$_POST['title'].'",content="'.$_POST['content'].'" where aid="'.$_POST['aid'].'"');
+                    if ($result > 0) {
+                        die(self::buildJSON(0, 'Well, the article was successfully updated.', null));
+                    }
+                    else {
+                        die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
+                    }
+                }
+            }
             break;
             default:
             die(self::buildJSON(-2, 'Sorry, the invalid application interface method was called.', null));
