@@ -7,16 +7,3 @@ require_once(APP_PATH.'library/base.class.php');
 $App = Base::getInstance();
 // 调用基类Api Launcher
 $App->Load('view');
-/*
-<?php
-$blog_keywords = '123';
-$blog_title = '12x3';
-$blog_desc = '1x4';
-$upTime = '2012';
-$blog_author = 'David Ding';
-
-$rss_url = './atom.xml';
-include('template/header.html');
-include('template/home.html');
-include('template/footer.html');
-*/
