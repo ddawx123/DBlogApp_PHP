@@ -90,7 +90,7 @@ class Base {
             header('Content-Type: text/plain; Charset=UTF-8');
             header('refresh:'.$timeout.'; url='.$url);
             echo 'Redirecting now, please wait ...';
-            return true;
+            exit();
         }
     }
 

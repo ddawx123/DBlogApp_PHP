@@ -8,7 +8,7 @@
     <script type="text/javascript" src="static/ueditor/third-party/jquery.min.js"></script>
     <script type="text/javascript" src="static/ueditor/third-party/template.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="static/ueditor/umeditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="static/ueditor/umeditor.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="static/ueditor/umeditor.js"></script>
     <script type="text/javascript" src="static/ueditor/lang/zh-cn/zh-cn.js"></script>
     <style type="text/css">
         h2 {
@@ -139,6 +139,16 @@
         UM.getEditor('myEditor').setHeight(document.documentElement.clientHeight - 300);
         UM.getEditor('myEditor').setEnabled();
     };
+    if (getUrlParam('aid') == '') {
+        location.href = './post.php?aid=0';
+    }
+    else if (getUrlParam('aid') != 0 && getUrlParam('aid') != '') {
+        //UM.getEditor('myEditor').setContent('你好');
+        getArticleContent();
+    }
+    else {
+        UM.getEditor('myEditor').setContent('在这里开始撰写你的博客吧~');
+    }
     function submit() {
         var a_title = document.getElementById('a_title').value;
         if (a_title == '') {
@@ -194,8 +204,49 @@
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         xhr.send('title=' + encodeURIComponent(a_title) + '&content=' + encodeURIComponent(a_content) + '&aid=' + getUrlParam('aid'));
     }
-    function setContent(isAppendTo) {
-        UM.getEditor('myEditor').setContent('欢迎使用umeditor');
+    function getArticleContent() {
+        var xhr;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        }
+        else {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+        }
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var data = eval("(" + xhr.responseText + ")");
+                    if (data.code == 0) {
+                        if (data.data == null) {
+                            alert('抱歉，无法访问ID为：' + getUrlParam('aid') + '的文章。该文章可能已被删除！将为您创建空白编辑器。');
+                            location.href = './post.php?aid=0';
+                            return false;
+                        }
+                        var title,content;
+                        data.data.forEach(function(item,index,data) {
+                            title = item.title;
+                            content = item.content;
+                        });
+                        document.getElementById('a_title').value = title;
+                        UM.getEditor('myEditor').setContent(content);
+                        return true;
+                    }
+                    else {
+                        alert('文章保存失败，系统发生未知错误！错误代码：' + data.code + '，请提供该信息给技术人员确定问题。');
+                        UM.getEditor('myEditor').setEnabled();
+                        return false;
+                    }
+                }
+                else {
+                    alert('文章保存失败，服务器暂时无法处理您的请求！请备份正在编辑的内容，并尝试重新访问编辑器。如果该现象多次出现，请联系网站管理员！');
+                    UM.getEditor('myEditor').setEnabled();
+                }
+            }
+        }
+        xhr.withCredentials = true;
+        xhr.open('POST', './api.php?action=getArticle', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.send('type=full&aid=' + getUrlParam('aid'));
     }
     function getUrlParam(key) {
         var search = window.location.search;

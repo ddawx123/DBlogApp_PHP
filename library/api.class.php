@@ -43,8 +43,7 @@ class API {
         }
         switch($_REQUEST['action']) {
             case 'getArticle':
-            $result = DB::getInstance()->QueryData('select * from article');
-            die(self::buildJSON(0, 'OK', $result));
+            self::articleReader();
             break;
             case 'getUser':
             if (!Base::getInstance()->isLogin()) {
@@ -69,6 +68,7 @@ class API {
                     echo file_get_contents(APP_PATH.'template/inc/dashboard.html');
                     break;
                     default:
+                    die('无效的模板文件！');
                     break;
                 }
             }
@@ -89,32 +89,13 @@ class API {
             if (!Base::getInstance()->isLogin()) {
                 die(self::buildJSON(-1, 'Please login and try again later.', null));
             }
-            if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['aid'])) {
-                die(self::buildJSON(-30, 'Sorry, the invalid article data was sended.', null));
-            }
-            else {
-                if ($_POST['title'] == '' || $_POST['content'] == '') {
-                    die(self::buildJSON(-31, 'Illegal article data.', null));
-                }
-                else if ($_POST['aid'] == '0') {
-                    $result = DB::getInstance()->QueryResult('insert into article (title,content,class,ptime,status) values ("'.$_POST['title'].'","'.$_POST['content'].'",1,"'.date('Y-m-d H:i:s',time()).'",1)');
-                    if ($result > 0) {
-                        die(self::buildJSON(0, 'Well, the article was successfully created.', null));
-                    }
-                    else {
-                        die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
-                    }
-                }
-                else {
-                    $result = DB::getInstance()->QueryResult('update article set title="'.$_POST['title'].'",content="'.$_POST['content'].'" where aid="'.$_POST['aid'].'"');
-                    if ($result > 0) {
-                        die(self::buildJSON(0, 'Well, the article was successfully updated.', null));
-                    }
-                    else {
-                        die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
-                    }
-                }
-            }
+            self::articleUpdater();
+            break;
+            case 'post/remove':
+            /*if (!Base::getInstance()->isLogin()) {
+                die(self::buildJSON(-1, 'Please login and try again later.', null));
+            }*/
+            self::articleRemover();
             break;
             default:
             die(self::buildJSON(-2, 'Sorry, the invalid application interface method was called.', null));
@@ -181,6 +162,90 @@ class API {
         }
         else {
             die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
+        }
+    }
+
+    /**
+     * 文章数据移除的实现
+     */
+    private function articleRemover() {
+        if (!is_numeric(@$_POST['aid'])) {
+            die(self::buildJSON(-31, 'Could not execute this operation, because you not input an article ID.', null));
+        }
+        $aid = htmlspecialchars(@$_POST['aid']);
+        $result = DB::getInstance()->QueryResult('delete from article where aid='.$aid);
+        if ($result != 0) {
+            die(self::buildJSON(0, 'Well, the article was successfully deleted.', null));
+        }
+        else {
+            die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
+        }
+    }
+
+    /**
+     * 文章数据读取的实现
+     */
+    private function articleReader() {
+        switch (@$_POST['type']) {
+            case 'list':
+            $column = 'aid,title,ctime';
+            break;
+            case 'full':
+            $column = '*';
+            break;
+            default:
+            die(self::buildJSON(-20, 'Could not fetch blog article data, because you are using the type of data acceptance that is not supported.', null));
+            break;
+        }
+        if (is_numeric(@$_POST['aid'])) {
+            $result = DB::getInstance()->QueryData('select '.$column.' from article where aid='.$_POST['aid']);
+        }
+        else if (!isset($_POST['limit'])) {
+            $result = DB::getInstance()->QueryData('select '.$column.' from article order by ctime desc');
+        }
+        else if (is_numeric($_POST['limit'])) {
+            if (@$_POST['limit'] == '0') {
+                $result = DB::getInstance()->QueryData('select '.$column.' from article order by ctime desc');
+            }
+            else {
+                $result = DB::getInstance()->QueryData('select '.$column.' from article order by ctime desc limit '.$_POST['limit']);
+            }
+        }
+        else {
+            $result = DB::getInstance()->QueryData('select * from article order by ctime desc');
+        }
+        die(self::buildJSON(0, 'OK', $result));
+    }
+
+    /**
+     * 文章更新过程的实现
+     */
+    private function articleUpdater() {
+        if (!isset($_POST['title']) || !isset($_POST['content']) || !isset($_POST['aid'])) {
+            die(self::buildJSON(-30, 'Sorry, the invalid article data was sended.', null));
+        }
+        else {
+            if ($_POST['title'] == '' || $_POST['content'] == '' || $_POST['aid'] == '') {
+                die(self::buildJSON(-31, 'Illegal article data.', null));
+            }
+            else if ($_POST['aid'] == '0') {
+                $result = DB::getInstance()->QueryResult('insert into article (title,content,class,ptime,status) values ("'.$_POST['title'].'","'.$_POST['content'].'",1,"'.date('Y-m-d H:i:s',time()).'",1)');
+                if ($result > 0) {
+                    die(self::buildJSON(0, 'Well, the article was successfully created.', null));
+                }
+                else {
+                    die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
+                }
+            }
+            else {
+                $result = DB::getInstance()->QueryResult('update article set title="'.$_POST['title'].'",content="'.$_POST['content'].'" where aid="'.$_POST['aid'].'"');
+                if ($result > 0) {
+                    die(self::buildJSON(0, 'Well, the article was successfully updated.', null));
+                }
+                else {
+                    die(self::buildJSON(-7, 'Oh-No, our database was denied your request. Please try again later.', null));
+                }
+            }
         }
     }
 

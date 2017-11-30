@@ -12,6 +12,7 @@ function UrlHashRouter() {
     case "#ArticleManager":
       changeTitle('文章管理 -' + oldtitle);
       fillTpl('postmgr');
+      getArticleList('0');
       break;
     case "#ClassManager":
       changeTitle('分类管理 -' + oldtitle);
@@ -20,6 +21,7 @@ function UrlHashRouter() {
     case "#Dashboard":
       changeTitle('信息面板 -' + oldtitle);
       fillTpl('dashboard');
+      getArticleList('3');
       break;
     default:
       location.hash = "Dashboard";
@@ -31,6 +33,7 @@ function UrlHashRouter() {
       case "#ArticleManager":
         changeTitle('文章管理 -' + oldtitle);
         fillTpl('postmgr');
+        getArticleList('0');
         break;
       case "#ClassManager":
         changeTitle('分类管理 -' + oldtitle);
@@ -83,6 +86,67 @@ function fillTpl(tplName) {
 }
 
 /**
+ * 前台获取首页博客文章列表过程
+ * @return {null}
+ */
+function getArticleIndex() {
+  var xhr;
+  var xhr;
+  if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+  }
+  else {
+    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+  }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        var data = eval("(" + xhr.responseText + ")");
+        if (data.code != 0) {
+          alert('文章数据拉取发生异常，请检查数据库系统是否正常。');
+          return false;
+        }
+        else if (data.data == null) {
+          alert('抱歉，该文章可能已经被删除。即将返回首页！');
+          location.href = './index.php';
+          return false;
+        }
+        else {
+          var html = '';
+          var aid,title,content,ctime;
+          var list = document.getElementById('posts');
+          data.data.forEach(function(item,index,data) {
+            aid = item.aid;
+            title = item.title;
+            content = item.content.substring(0,200);
+            ctime = item.ctime;
+            html += '<article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">\
+            <header class="post-header"><h1 class="post-title" itemprop="name headline">\
+            <a class="post-title-link" href="./index.php?c=article&aid='+aid+'" itemprop="url">'+title+'</a>\
+            </h1><div class="post-meta">\
+            <span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span>\
+            <span class="post-meta-item-text">发表于</span>\
+            <time itemprop="dateCreated" datetime="'+ctime+'" content="'+ctime+'">'+ctime+'\
+            </time></span></div></header><div class="post-body" itemprop="articleBody">'+content+'</div>\
+            <div class="post-more-link text-center"><a class="btn" href="./index.php?c=article&aid='+aid+'" rel="contents">\
+            阅读全文 &raquo;</a></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article>';
+          });
+          list.innerHTML = html;
+        }
+      }
+      else {
+        alert('系统异常！请与管理员联系。');
+        return false;
+      }
+    }
+  }
+  xhr.withCredentials = true;
+  xhr.open('POST', './api.php?action=getArticle', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('limit=0&type=full');
+}
+
+/**
  * 信息面板数据的拉取
  * @param {string} limit_count 输出限制数
  * @return {null}
@@ -110,12 +174,16 @@ function getArticleList(limit_count) {
         else {
           var aid;
           var title;
-          var table = '<tr><th bgcolor="#EBEBEB">文章ID</th><th bgcolor="#EBEBEB">文章标题</th></tr>';
+          var table = '<tr><th bgcolor="#EBEBEB">文章标题（点击编辑）</th><th bgcolor="#EBEBEB">更新时间</th><th bgcolor="#EBEBEB">管理操作</th></tr>';
           data.data.forEach(function(item,index,data) {
             aid = item.aid;
             title = item.title;
+            ctime = item.ctime;
             table += '\
-            <tr><td align="left" bgcolor="#FFFFFF"><font color="MediumSeaGreen">' + aid + '</font></td><td align="left" bgcolor="#FFFFFF"><font color="MediumSeaGreen">' + title + '</font></td></tr>';
+            <tr>\
+            <td align="left" bgcolor="#FFFFFF"><font color="MediumSeaGreen" onclick="openMiniWindow(\'./post.php?aid=' + aid + '\',800,600)">' + title + '</font></td>\
+            <td align="left" bgcolor="#FFFFFF"><font color="MediumSeaGreen">' + ctime + '</font></td>\
+            <td align="center" bgcolor="#FFFFFF"><font color="OrangeRed" onclick="delArticle(' + aid + ')">删除</font></tr>';
           });
           document.getElementById('siteInformation').innerHTML = table;
         }
@@ -133,7 +201,69 @@ function getArticleList(limit_count) {
   xhr.withCredentials = true;
   xhr.open('POST', './api.php?action=getArticle', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.send('limit=' + limit_count);
+  xhr.send('limit=' + limit_count + '&type=list');
+}
+
+/**
+ * 博客文章的删除过程
+ * @param {integer} 文章ID
+ * @return {null}
+ */
+function delArticle(aid) {
+  if (typeof (aid) == 'undefined' && aid == '') {
+    alert('由于该页面过期，无法继续操作。稍后为您刷新！');
+    location.reload();
+    return false;
+  }
+  var xhr;
+  if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+  }
+  else {
+    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+  }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        var data = eval("(" + xhr.responseText + ")");
+        if (data.code == 0) {
+          console.log(data.message);
+          alert('删除成功！即将为您刷新页面。');
+          location.reload();
+        }
+        else {
+          console.log(data.message);
+          alert('删除失败，可能是数据中心忙碌或您的数据库空间处于只读状态！请核查这些问题后再次尝试。');
+          return false;
+        }
+      }
+      else {
+        alert('发生未知错误，错误代码：' + xhr.status + '。请将此错误代码提供给软件开发者作进一步分析！');
+        return false;
+      }
+    }
+  }
+  xhr.withCredentials = true;
+  xhr.open('POST', './api.php?action=post/remove', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('aid=' + aid);
+}
+
+/**
+ * 创建新的弹出窗口（带callback监控刷新）
+ * @param {string} url url地址
+ * @param {integer} w 窗体宽度
+ * @param {integer} h 窗体高度
+ * @return {null}
+ */
+function openMiniWindow(url,w=800,h=600) {
+  var my_window = window.open(url,'edit_post','width=' + w + ',height=' + h);
+  var my_window_timer = setInterval(function() {
+    if (my_window.closed) {
+      clearInterval(my_window_timer);
+      location.reload();
+    }
+  },1000);
 }
 
 /**
