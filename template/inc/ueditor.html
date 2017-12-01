@@ -183,7 +183,10 @@
                     }
                     else if (data.code == -1) {
                         alert('文章保存失败，您尚未登录！请在稍后弹出的登录窗口中提供相关凭据后再次尝试。');
-                        window.open('./index.php?c=login&callback=miniform','edit_post','width=800,height=600');
+                        var openFlag = window.open('./index.php?c=login&callback=miniform','mini_login','width=800,height=600');
+                        if (openFlag == null) {
+                            alert('登陆窗口创建失败，您的浏览器启用了弹出窗口过滤功能。请先临时放行本网站！');
+                        }
                         UM.getEditor('myEditor').setEnabled();
                         return false;
                     }

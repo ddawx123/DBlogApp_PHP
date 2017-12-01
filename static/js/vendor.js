@@ -386,6 +386,9 @@ function postLogin() {
           if (getUrlParam('callback') == '') {
             location.href = './index.php?c=index';
           }
+          else if (getUrlParam('callback') == 'miniform') {
+            window.close();
+          }
           else {
             location.href = decodeURI(getUrlParam('callback'));
           }
