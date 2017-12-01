@@ -53,7 +53,7 @@ class DB {
             self::$_sqlcon = self::connect();
         }
         $result = self::$_sqlcon->query($sqlcode);
-        $data = $result->fetch_all(MYSQL_ASSOC);
+        $data = $result->fetch_all(MYSQLI_ASSOC);
         if ($data == null || $data == '') {
             return null;
         }
