@@ -52,6 +52,13 @@ class Tpl {
         else {
             switch (@$_REQUEST['c']) {
                 case 'detail':
+                self::Load(
+                    array(
+                        'header.html',
+                        'detail.html',
+                        'footer.html'
+                    )
+                );
                 break;
                 case 'manager':
                 if (!Base::getInstance()->isLogin()) {
@@ -108,14 +115,12 @@ class Tpl {
                 case 'notfound':
                 self::Load(
                     array(
-                        'header.html',
-                        '404.html',
-                        'footer.html'
+                        '404.html'
                     )
                 );
                 break;
                 default:
-                Base::redirect('./index.php?c=notfound',0);
+                Base::redirect('./index.php?c=notfound&referer='.urlencode($_SERVER['REQUEST_URI']),0);
                 break;
             }
         }

@@ -1,0 +1,443 @@
+/*
+ * Dandelion Admin v1.0 - Obfuscated Main Stylesheet
+ * This file has been obfuscated using this tool: http://refresh-sf.com/yui/
+ * Buyers will get a full, commented CSS source code in their downloadable package.
+ *
+ * This file is part of Dandelion Admin, an Admin template build for sale at ThemeForest.
+ *
+ */
+ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,dialog,div,dl,dt,em,embed,fieldset,figcaption,figure,font,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,hr,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,meter,nav,object,ol,output,p,pre,progress,q,rp,rt,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video,xmp {
+	border: 0;
+	margin: 0;
+	padding: 0;
+	font-size: 100%
+}
+
+html,body {
+	height: 100%
+}
+
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
+	display: block
+}
+
+b,strong {
+	font-weight: bold
+}
+
+img {
+	color: transparent;
+	font-size: 0;
+	vertical-align: middle;
+	-ms-interpolation-mode: bicubic
+}
+
+li {
+	display: list-item
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+th,td,caption {
+	font-weight: normal;
+	vertical-align: top;
+	text-align: left
+}
+
+q {
+	quotes: none
+}
+
+q:before,q:after {
+	content: '';
+	content: none
+}
+
+sub,sup,small {
+	font-size: 75%
+}
+
+sub,sup {
+	line-height: 0;
+	position: relative;
+	vertical-align: baseline
+}
+
+sub {
+	bottom: -0.25em
+}
+
+sup {
+	top: -0.5em
+}
+
+svg {
+	overflow: hidden
+}
+
+body {
+	background-image: url("../images/error/blueprint.png")
+}
+
+div#da-header #da-header-top {
+	background-image: url("../images/error/carbon.png")
+}
+
+.da-button {
+	display: inline-block;
+	border: 0;
+	outline: 0;
+	font: 12px/17px 'Helvetica Neue',Arial,Helvetica,sans-serif;
+	padding: 4px 12px;
+	margin: 0;
+	width: auto;
+	cursor: pointer;
+	text-decoration: none;
+	zoom: 1;
+	overflow: hidden;
+	*overflow: visible;
+	color: #fff;
+	border: 1px solid;
+	text-shadow: 1px 1px rgba(0,0,0,0.35);
+	-webkit-border-radius: 2px;
+	-o-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	-webkit-appearance: none;
+	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15),inset 0 1px 1px rgba(255,255,255,0.35);
+	-o-box-shadow: 0 1px 1px rgba(0,0,0,0.15),inset 0 1px 1px rgba(255,255,255,0.35);
+	-moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15),inset 0 1px 1px rgba(255,255,255,0.35);
+	box-shadow: 0 1px 1px rgba(0,0,0,0.15),inset 0 1px 1px rgba(255,255,255,0.35);
+	-webkit-tap-highlight-color: rgba(0,0,0,0)
+}
+
+.da-button.left {
+	float: left
+}
+
+.da-button.small {
+	padding: 2px 8px
+}
+
+.da-button.large {
+	padding: 6px 16px
+}
+
+.da-button:active {
+	background-image: none!important;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,1);
+	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,1);
+	-o-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,1);
+	box-shadow: inset 0 1px 2px rgba(0,0,0,0.1),0 1px 0 rgba(255,255,255,1)
+}
+
+.da-button:disabled {
+	background-image: none;
+	-webkit-box-shadow: none;
+	-o-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	color: #dadada;
+	background-color: #f8f8f8;
+	border-color: #ddd;
+	cursor: default
+}
+
+.da-button img {
+	margin: 0 2px;
+	max-width: 16px;
+	max-height: 16px
+}
+
+.da-button.blue {
+	background-color: #61a4e4;
+	background-image: linear-gradient(bottom,#61a4e4 0,#78b4ec 100%);
+	background-image: -o-linear-gradient(bottom,#61a4e4 0,#78b4ec 100%);
+	background-image: -moz-linear-gradient(bottom,#61a4e4 0,#78b4ec 100%);
+	background-image: -webkit-linear-gradient(bottom,#61a4e4 0,#78b4ec 100%);
+	background-image: -ms-linear-gradient(bottom,#61a4e4 0,#78b4ec 100%);
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#61a4e4),color-stop(1,#78b4ec));
+	border-color: #21629c
+}
+
+.da-button,.da-button.green {
+	background-color: #a7d037;
+	background-image: linear-gradient(bottom,#a7d037 0,#c8e342 100%);
+	background-image: -o-linear-gradient(bottom,#a7d037 0,#c8e342 100%);
+	background-image: -moz-linear-gradient(bottom,#a7d037 0,#c8e342 100%);
+	background-image: -webkit-linear-gradient(bottom,#a7d037 0,#c8e342 100%);
+	background-image: -ms-linear-gradient(bottom,#a7d037 0,#c8e342 100%);
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#a7d037),color-stop(1,#c8e342));
+	border-color: #779625
+}
+
+.da-button.red {
+	background-color: #e15656;
+	background-image: linear-gradient(bottom,#e15656 0,#f77272 100%);
+	background-image: -o-linear-gradient(bottom,#e15656 0,#f77272 100%);
+	background-image: -moz-linear-gradient(bottom,#e15656 0,#f77272 100%);
+	background-image: -webkit-linear-gradient(bottom,#e15656 0,#f77272 100%);
+	background-image: -ms-linear-gradient(bottom,#e15656 0,#f77272 100%);
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#e15656),color-stop(1,#f77272));
+	border-color: #bb2929
+}
+
+.da-button.pink {
+	background-color: #ea799b;
+	background-image: linear-gradient(bottom,#ea799b 0,#eea3bc 100%);
+	background-image: -o-linear-gradient(bottom,#ea799b 0,#eea3bc 100%);
+	background-image: -moz-linear-gradient(bottom,#ea799b 0,#eea3bc 100%);
+	background-image: -webkit-linear-gradient(bottom,#ea799b 0,#eea3bc 100%);
+	background-image: -ms-linear-gradient(bottom,#ea799b 0,#eea3bc 100%);
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#ea799b),color-stop(1,#eea3bc));
+	border-color: #b04264
+}
+
+.da-button.gray {
+	background-color: #e3e3e3;
+	background-image: linear-gradient(bottom,#e3e3e3 0,#f9f9f9 100%);
+	background-image: -o-linear-gradient(bottom,#e3e3e3 0,#f9f9f9 100%);
+	background-image: -moz-linear-gradient(bottom,#e3e3e3 0,#f9f9f9 100%);
+	background-image: -webkit-linear-gradient(bottom,#e3e3e3 0,#f9f9f9 100%);
+	background-image: -ms-linear-gradient(bottom,#e3e3e3 0,#f9f9f9 100%);
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#e3e3e3),color-stop(1,#f9f9f9));
+	color: #666;
+	text-shadow: 1px 1px rgba(0,0,0,0.1);
+	border-color: #9e9e9e
+}
+
+.da-button.orange {
+	background-color: #fab341;
+	background-image: linear-gradient(bottom,#fab341 0,#ffcb72 100%);
+	background-image: -o-linear-gradient(bottom,#fab341 0,#ffcb72 100%);
+	background-image: -moz-linear-gradient(bottom,#fab341 0,#ffcb72 100%);
+	background-image: -webkit-linear-gradient(bottom,#fab341 0,#ffcb72 100%);
+	background-image: -ms-linear-gradient(bottom,#fab341 0,#ffcb72 100%);
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#fab341),color-stop(1,#ffcb72));
+	border-color: #cc731e
+}
+
+.da-highlight {
+	color: #d44d24
+}
+
+::-webkit-input-placeholder {
+	color: #999
+}
+
+:-moz-placeholder {
+	color: #999
+}
+
+.placeholder {
+	color: #999
+}
+
+
+body {
+	background-color: #f2f2f2;
+	color: #444;
+	font: 12px/1.5 'Helvetica Neue',Arial,Helvetica,sans-serif
+}
+
+div#da-wrapper {
+	height: auto;
+	min-height: 100%;
+	position: relative;
+	min-width: 320px
+}
+
+div#da-wrapper,div#da-wrapper.fluid {
+	width: 100%
+}
+
+div#da-wrapper .da-container,div#da-wrapper.fluid .da-container {
+	width: 96%;
+	margin: auto
+}
+
+div#da-wrapper.fixed {
+	min-width: 960px
+}
+
+div#da-wrapper.fixed .da-container {
+	width: 960px
+}
+
+div#da-content {
+	clear: both;
+	padding-bottom: 58px
+}
+
+
+@media only screen and (min-width:481px) and (max-width:1023px) {
+	div#da-header #da-header-bottom #da-search {
+		width: 115px
+	}
+
+	div#da-header #da-header-bottom #da-breadcrumb {
+		margin-left: 165px
+	}
+
+	div#da-content #da-sidebar-separator {
+		left: 115px!important
+	}
+
+	div#da-wrapper.fixed #da-sidebar-separator {
+		margin-left: 2%
+	}
+
+	div#da-content #da-sidebar #da-main-nav.da-button-container {
+		width: 109px
+	}
+
+	div#da-content #da-main-nav ul li span.da-nav-icon {
+		position: relative;
+		width: auto;
+		height: auto;
+		left: auto;
+		top: auto;
+		text-align: center;
+		margin: 0 0 4px 0
+	}
+
+	div#da-content #da-main-nav ul li span.da-nav-icon img {
+		max-width: none;
+		max-height: none;
+		position: relative;
+		left: auto;
+		top: auto;
+		margin-left: 0;
+		margin-top: 0
+	}
+
+	div#da-content #da-main-nav ul li a,div#da-content #da-main-nav ul li span {
+		padding: 16px;
+		text-align: center;
+		background-position: right top
+	}
+
+	div#da-content #da-main-nav ul li ul li a,div#da-content #da-main-nav ul li ul li span {
+		padding: 6px 0;
+		text-align: center
+	}
+
+	div#da-content #da-content-wrap {
+		margin-left: 165px
+	}
+}
+
+
+
+
+div#da-error-wrapper {
+	width: 320px;
+	padding: 30px 0;
+	margin: auto;
+	position: relative
+}
+
+div#da-error-wrapper .da-error-heading {
+	color: #e15656;
+	text-align: center;
+	font-size: 24px;
+	font-family: Georgia,"Times New Roman",Times,serif
+}
+
+@-webkit-keyframes error-swing {
+	0% {
+		-webkit-transform: rotate(1deg)
+	}
+
+	100% {
+		-webkit-transform: rotate(-2deg)
+	}
+}
+
+@-moz-keyframes error-swing {
+	0% {
+		-moz-transform: rotate(1deg)
+	}
+
+	100% {
+		-moz-transform: rotate(-2deg)
+	}
+}
+
+@keyframes error-swing {
+	0% {
+		transform: rotate(1deg)
+	}
+
+	100% {
+		transform: rotate(-2deg)
+	}
+}
+
+div#da-error-wrapper #da-error-code {
+	width: 285px;
+	height: 170px;
+	padding: 127px 16px 0 16px;
+	position: relative;
+	margin: auto;
+	margin-bottom: 20px;
+	z-index: 5;
+	line-height: 1;
+	font-size: 32px;
+	text-align: center;
+	background: url("../images/error/error-hanger.png") no-repeat center center;
+	-webkit-transform-origin: center top;
+	-moz-transform-origin: center top;
+	transform-origin: center top;
+	-webkit-animation: error-swing infinite 2s ease-in-out alternate;
+	-moz-animation: error-swing infinite 2s ease-in-out alternate;
+	animation: error-swing infinite 2s ease-in-out alternate
+}
+
+div#da-error-wrapper #da-error-code span {
+	font-size: 96px;
+	display: block
+}
+
+div#da-error-wrapper #da-error-pin {
+	width: 38px;
+	height: 38px;
+	display: block;
+	margin: auto;
+	margin-bottom: -27px;
+	z-index: 10;
+	position: relative;
+	background: url("../images/error/error-pin.png") no-repeat center center
+}
+
+div#da-error-wrapper p {
+	text-align: center;
+	font-size: 14px
+}
+
+div#da-error-wrapper p a {
+	margin: 5px;
+	color: #fff;
+	background: #a6d037;
+	text-decoration: none;
+	padding: 1px 6px;
+	display: inline-block;
+	-webkit-border-radius: 4px;
+	-o-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px
+}
+
+
+h1 {
+    font-weight: normal;
+    font-size: 21px
+}
+
+p,dl,hr,h1,h2,h3,h4,h5,h6,ol,ul,pre,table,address,fieldset,figure {
+	margin-bottom: 20px
+}
+

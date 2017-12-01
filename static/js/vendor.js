@@ -118,17 +118,17 @@ function getArticleIndex() {
           data.data.forEach(function(item,index,data) {
             aid = item.aid;
             title = item.title;
-            content = item.content.substring(0,200);
+            content = item.content.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').substring(0,100);
             ctime = item.ctime;
             html += '<article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">\
             <header class="post-header"><h1 class="post-title" itemprop="name headline">\
-            <a class="post-title-link" href="./index.php?c=article&aid='+aid+'" itemprop="url">'+title+'</a>\
+            <a class="post-title-link" href="./index.php?c=detail&aid='+aid+'" itemprop="url">'+title+'</a>\
             </h1><div class="post-meta">\
             <span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span>\
             <span class="post-meta-item-text">发表于</span>\
             <time itemprop="dateCreated" datetime="'+ctime+'" content="'+ctime+'">'+ctime+'\
-            </time></span></div></header><div class="post-body" itemprop="articleBody">'+content+'</div>\
-            <div class="post-more-link text-center"><a class="btn" href="./index.php?c=article&aid='+aid+'" rel="contents">\
+            </time></span></div></header><div class="post-body" itemprop="articleBody">文章概要：'+content+'</div>\
+            <div class="post-more-link text-center"><a class="btn" href="./index.php?c=detail&aid='+aid+'" rel="contents">\
             阅读全文 &raquo;</a></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article>';
           });
           list.innerHTML = html;
@@ -144,6 +144,68 @@ function getArticleIndex() {
   xhr.open('POST', './api.php?action=getArticle', true);
   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhr.send('limit=0&type=full');
+}
+
+/**
+ * 前台获取首页博客完整文章过程
+ * @return {null}
+ */
+function getArticleDetail() {
+  var xhr;
+  var xhr;
+  if (window.XMLHttpRequest) {
+    xhr = new XMLHttpRequest();
+  }
+  else {
+    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+  }
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4) {
+      if (xhr.status == 200) {
+        var data = eval("(" + xhr.responseText + ")");
+        if (data.code != 0) {
+          alert('文章数据拉取发生异常，请检查数据库系统是否正常。');
+          return false;
+        }
+        else if (data.data == null) {
+          alert('抱歉，该文章可能已经被删除。即将返回首页！');
+          location.href = './index.php';
+          return false;
+        }
+        else {
+          var html = '';
+          var aid,title,content,ctime;
+          var list = document.getElementById('posts');
+          data.data.forEach(function(item,index,data) {
+            aid = item.aid;
+            title = item.title;
+            content = item.content;
+            ctime = item.ctime;
+            html += '<article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">\
+            <header class="post-header"><h1 class="post-title" itemprop="name headline">\
+            <a class="post-title-link" href="./index.php?c=detail&aid='+aid+'" itemprop="url">'+title+'</a>\
+            </h1><div class="post-meta">\
+            <span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span>\
+            <span class="post-meta-item-text">发表于</span>\
+            <time itemprop="dateCreated" datetime="'+ctime+'" content="'+ctime+'">'+ctime+'\
+            </time></span></div></header><div class="post-body" itemprop="articleBody">'+content+'</div>\
+            <div class="post-more-link text-center"><a class="btn" href="javascript:void(0);" onclick="alert(\'评论系统尚未开发完毕，敬请期待！\')" rel="contents">\
+            展开评论 &raquo;</a></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><div class="post-spread"></div>';
+          });
+          changeTitle(title);
+          list.innerHTML = html;
+        }
+      }
+      else {
+        alert('系统异常！请与管理员联系。');
+        return false;
+      }
+    }
+  }
+  xhr.withCredentials = true;
+  xhr.open('POST', './api.php?action=getArticle', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.send('limit=0&type=full&aid=' + getUrlParam('aid'));
 }
 
 /**
@@ -193,7 +255,7 @@ function getArticleList(limit_count) {
         return false;
       }
       else {
-        alert('发生未知错误，错误代码：' + xhr.status + '。请将此错误代码提供给软件开发者作进一步分析！');
+        console.log('XmlHttp request exception, status code：' + xhr.status + '. Please contact application developer!');
         return false;
       }
     }

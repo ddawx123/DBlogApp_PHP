@@ -21,7 +21,8 @@ $dcp = array(
     'blog_desc' =>  $config->bloginfo->blog_description,
     'blog_keywords' =>  $config->bloginfo->blog_description,
     'upTime'    =>  substr($config->buildTime,0,4),
-    'blog_author'   =>  $config->bloginfo->blog_author
+    'blog_author'   =>  $config->bloginfo->blog_author,
+    'rss_url'   =>  './api.php?action=getArticle&type=list'
 );
 /*
 $blog_keywords = '123';

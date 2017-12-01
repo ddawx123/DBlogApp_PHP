@@ -186,7 +186,7 @@ class API {
      * 文章数据读取的实现
      */
     private function articleReader() {
-        switch (@$_POST['type']) {
+        switch (@$_REQUEST['type']) {
             case 'list':
             $column = 'aid,title,ctime';
             break;
