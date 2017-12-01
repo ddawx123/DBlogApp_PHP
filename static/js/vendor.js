@@ -107,8 +107,8 @@ function getArticleIndex() {
           return false;
         }
         else if (data.data == null) {
-          alert('抱歉，该文章可能已经被删除。即将返回首页！');
-          location.href = './index.php';
+          alert('您还没有发表过任何文章，将为您自动跳转至用户中心！');
+          location.href = './index.php?c=manager';
           return false;
         }
         else {
