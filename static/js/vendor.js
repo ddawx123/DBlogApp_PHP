@@ -91,7 +91,6 @@ function fillTpl(tplName) {
  */
 function getArticleIndex() {
   var xhr;
-  var xhr;
   if (window.XMLHttpRequest) {
     xhr = new XMLHttpRequest();
   }
