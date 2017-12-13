@@ -1,0 +1,14 @@
+[
+    {
+        "title": "Test",
+        "artist": "Test Author",
+        "mp3": "http://static2.dingstudio.cn/musics/668450.mp3",
+        "cover": "http://p4.music.126.net/KLw_TLTRUe9pClPv4vlEtQ==/936783906865219.jpg?param=106x106"
+    },
+    {
+        "title": "Test 2",
+        "artist": "Second Author",
+        "mp3": "http://static2.dingstudio.cn/musics/668450.mp3",
+        "cover": "http://p4.music.126.net/KLw_TLTRUe9pClPv4vlEtQ==/936783906865219.jpg?param=106x106"
+    }
+]

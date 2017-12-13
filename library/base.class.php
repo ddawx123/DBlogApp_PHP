@@ -58,6 +58,10 @@ class Base {
             require_once(APP_PATH.'library/ueditor.class.php');
             Ueditor::getInstance()->Load();
             break;
+            case 'music':
+            require_once(APP_PATH.'library/music.class.php');
+            WebMusic::getInstance()->Load();
+            break;
             default:
             header('Content-Type: text/plain; Charset=UTF-8');
             echo 'Exception: Could not fount this request router, please try again later.';

@@ -10,6 +10,7 @@
   <link href="static/fonts/gfonts.css" rel="stylesheet" type="text/css">
   <link href="static/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
   <link href="static/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+  <link href="static/css/player.css" rel="stylesheet" type="text/css" />
   <meta name="keywords" content="<?php echo $dcp['blog_title']; ?>" />
   <link rel="alternate" href="static/atom.xml" title="<?php echo $dcp['blog_title']; ?>" type="application/atom+xml" />
   <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico?v=5.0.1" />
@@ -120,13 +121,13 @@
                   $html = '<article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
                           <header class="post-header">
                           <h1 class="post-title" itemprop="name headline">
-                          <a class="post-title-link" href="./index.php?c=detail&aid='.$aid.'" itemprop="url">'.$title.'</a>
+                          <a class="post-title-link" href="./index.php?c=detail&aid='.$aid.'" itemprop="url" target="_blank">'.$title.'</a>
                           </h1><div class="post-meta">
                           <span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i></span>
                           <span class="post-meta-item-text">发表于</span>
                           <time itemprop="dateCreated" datetime="'.$ctime.'" content="'.$ctime.'">'.$ctime.'
                           </time></span></div></header><div class="post-body" itemprop="articleBody">文章概要：'.$content.'</div>
-                          <div class="post-more-link text-center"><a class="btn" href="./index.php?c=detail&aid='.$aid.'" rel="contents">
+                          <div class="post-more-link text-center"><a class="btn" href="./index.php?c=detail&aid='.$aid.'" rel="contents" target="_blank">
                           阅读全文 &raquo;</a></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article>';
                   echo $html;
               }
@@ -176,7 +177,35 @@
 </aside>
 </div>
 </main>
-
+<div id="QPlayer">
+  <div id="pContent">
+    <div id="player">
+      <span class="cover"></span>
+      <div class="ctrl">
+        <div class="musicTag marquee">
+          <strong>Title</strong>
+           <span> - </span>
+          <span class="artist">Artist</span>
+        </div>
+        <div class="progress">
+          <div class="timer left">0:00</div>
+          <div class="contr">
+            <div class="rewind icon"></div>
+            <div class="playback icon"></div>
+            <div class="fastforward icon"></div>
+          </div>
+          <div class="right">
+            <div class="liebiao icon"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ssBtn">
+            <div class="adf"></div>
+      </div>
+  </div>
+  <ol id="playlist"></ol>
+  </div>
 <footer id="footer" class="footer">
   <div class="footer-inner">
     <div class="copyright">
@@ -208,5 +237,8 @@ if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
   window.Promise = null;
 }
 </script>
+<script type="text/javascript" src="music.php?output=js"></script>
+<script type="text/javascript" src="static/js/jquery.marquee.min.js"></script>
+<script type="text/javascript" src="static/js/player.js"></script>
 </body>
 </html>

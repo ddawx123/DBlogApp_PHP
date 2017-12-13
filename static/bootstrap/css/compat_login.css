@@ -1,0 +1,79 @@
+a {
+    text-decoration: none;
+    color:#2365AF;
+}
+body {
+    margin:0;
+    padding:0;
+    text-align:center;
+    background-color:#fff;
+}
+.font1 {
+    font-size:13px;
+    font-family:Microsoft YaHei;
+    line-height:24px;
+    color:#606060;
+}
+.font2 {
+    font-size:12px;
+    font-family:Microsoft YaHei;
+    line-height:24px;
+    color:#719CB3;
+}
+.con {
+    width: 1000px;
+    height:600px;
+    margin-right: auto;
+    margin-left: auto;
+}
+#inputs input{
+    margin-left:10px;
+    padding-left:5px;
+    margin-top: 9px;
+    height: 28px;
+    width: 180px;
+    font: 14px Microsoft YaHei, Helvetica;
+    border: 1px solid #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    -webkit-box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+    box-shadow: 0 1px 1px #ccc inset, 0 1px 0 #fff;
+}
+#inputs input:focus {
+    background-color: #fff;
+    border-color: #e8c291;
+    outline: none;
+    -moz-box-shadow: 0 0 0 1px #e8c291 inset;
+    -webkit-box-shadow: 0 0 0 1px #e8c291 inset;
+    box-shadow: 0 0 0 1px #e8c291 inset;
+}
+.submit{		
+    background-color: #ffb94b;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#fddb6f), to(#ffb94b));
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d69e31 #e3a037 #d5982d #e3a037;
+    float: center;
+    margin-top: 9px;
+    height: 28px;
+    padding: 0;
+    width: 109px;
+    cursor: pointer;
+    font: 14px Microsoft YaHei, Helvetica;
+    color: #8f5a0a;
+}
+.submit:hover,.submit:focus{		
+    background-color: #fddb6f;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#ffb94b), to(#fddb6f));
+}	
+.submit:active{		
+    outline: none;
+    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5) inset;		
+}

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta charset="utf-8" />
+    <!-- set auto resize mode -->
+    <title>网站背景音乐管理</title>
+    <meta name="theme-color" content="#3979B9">
+    <link rel="shortcut icon" type="image/x-icon" href="static/favicon.ico?v=5.0.1" />
+    <!-- include bootstrap support css -->
+    <link rel="stylesheet" href="static/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+    <div style="max-width:80%;width:auto;margin-left: auto;margin-right: auto;padding:5px;">
+        <div class="table-responsive">
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="./index.php?c=manager">返回后台管理</a>
+                    </div>
+                    <div class="collapse navbar-collapse" id="example-navbar-collapse">
+                        <ul class="nav navbar-nav">
+                            <li><a>网站背景音乐管理系统_独立版</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <div id="audioListViewBox" align="center">
+                <h3>配置文件修改区</h3>
+                <textarea id="audioListView" cols="80" rows="20"></textarea>
+                <hr>
+                <input type="button" class="btn btn-primary" value="应用配置" onclick="updateJSONConfigure()" />
+                <input type="button" class="btn btn-success" value="重新载入" onclick="fetchData()" />
+                <?php
+                if (file_exists(APP_PATH.'data/autoplay.dat')) {
+                    echo '<div class="checkbox"><input type="checkbox" id="autoplaySelector" onchange="setAutoplay(this)" checked /><label for="autoplaySelector">自动播放</label></div>';
+                }
+                else {
+                    echo '<div class="checkbox"><input type="checkbox" id="autoplaySelector" onchange="setAutoplay(this)" /><label for="autoplaySelector">自动播放</label></div>';
+                }
+                ?>
+                <hr>
+            </div>
+
+            <table align="center" width="100%" height="20" border="0" align="center" cellpadding="5" cellspacing="1" bgcolor="#B3B3B3" class="table table-striped table-bordered">
+                <tr>
+                    <td align="center" bgcolor="#EBEBEB">高级功能：<a id="reinit_cmd" href="javascript:void(0);" class="btn btn-warning" onclick="rebuildJSON()">快速重建配置文件（危险）</a></td>
+                </tr>
+                <tr>
+                    <td align="center" bgcolor="#EBEBEB">网站背景音乐管理系统-博客内嵌版 | &copy;2012-<?php echo date('Y',time()); ?> <a href="http://www.dingstudio.cn">DingStudio</a> All Rights Reserved</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        function updateAutoplay(status) {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            }
+            else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var data = eval("(" + xhr.responseText + ")");
+                        if (data.code == 0) {
+                            alert('自动播放属性更改成功！');
+                        }
+                        else {
+                            alert('自动播放属性更改失败，建议稍候再次尝试。如果该现象多次出现，请联系软件开发者！');
+                        }
+                    }
+                    else {
+                        alert('服务器状态异常，请联系服务器管理员或软件开发者！');
+                    }
+                }
+            }
+            xhr.open('POST', './music.php', true);
+            xhr.withCredentials = true;
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('method=autoplay&autoplay=' + status);
+        }
+        function rebuildJSON() {
+            if (!confirm('您确认要重建配置文件到缺省范例么？\n温馨提示：此功能仅建议在配置文件丢失或误编辑导致损坏时使用，执行此操作后您原有的配置信息将被全部清除。')) {
+                return false;
+            }
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            }
+            else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        var data = eval("(" + xhr.responseText + ")");
+                        if (data.code == 0) {
+                            alert('配置文件初始化完毕，现将自动重新载入页面！');
+                            fetchData();
+                        }
+                        else {
+                            alert('抱歉，配置文件暂时无法操作（可能当前权限为只读）建议稍候再次尝试！如果该现象多次出现，请联系软件开发者！');
+                        }
+                    }
+                    else {
+                        alert('服务器状态异常，请联系服务器管理员或软件开发者！');
+                    }
+                }
+            }
+            xhr.open('POST', './music.php', true);
+            xhr.withCredentials = true;
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('method=factory');
+        }
+        function fetchData() {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                xhr = new XMLHttpRequest();
+            }
+            else {
+                xhr = new ActiveXObject('Microsoft.XMLHTTP');
+            }
+            xhr.onreadystatechange = function () {
+              if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    var data = eval("(" + xhr.responseText + ")");
+                    var count = 1;
+                    data.forEach(function(item, index, data) {
+                        var title = item.title;
+                        var artist = item.artist;
+                        var mp3 = item.mp3;
+                        var cover = item.cover;
+                        count++;
+                    });
+                    document.getElementById('audioListView').value = xhr.responseText;
+                }
+                else {
+                    if (!confirm('温馨提示：\n我们发现您的网站背景音乐配置文件可能已经丢失，是否进行配置文件重建？该操作将清除所有配置信息并恢复缺省范例，请慎重操作。')) {
+                        return false;
+                    }
+                    rebuildJSON();
+                }
+              }
+            }
+            xhr.open('GET', './data/music.json', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send();
+        }
+        function updateJSONConfigure() {
+            if (document.getElementById('audioListView').value != '') {
+                var jsondata = document.getElementById('audioListView').value;
+                var xhr;
+                if (window.XMLHttpRequest) {
+                    xhr = new XMLHttpRequest();
+                }
+                else {
+                    xhr = new ActiveXObject('Microsoft.XMLHTTP');
+                }
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+                        if (xhr.status == 200) {
+                            var data = eval("(" + xhr.responseText + ")");
+                            if (data.code == 0) {
+                                alert('配置文件已更新完毕！');
+                            }
+                            else {
+                                alert('配置文件更新失败，建议稍候再次尝试。如果该现象多次出现，请联系软件开发者！');
+                            }
+                        }
+                        else {
+                            alert('服务器状态异常，请联系服务器管理员或软件开发者！');
+                        }
+                    }
+                }
+                xhr.open('POST', './music.php', true);
+                xhr.withCredentials = true;
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.send('method=upgrade&data=' + encodeURIComponent(jsondata));
+            }
+            else {
+                alert('配置文件信息非法，如果您意外损坏了配置文件，请通过配置文件重建功能重新生成！');
+            }
+        }
+        function setAutoplay(target) {
+            if (target.checked) {
+                updateAutoplay('yes');
+            }
+            else {
+                updateAutoplay('no');
+            }
+        }
+    </script>
+    <script>
+        fetchData();
+    </script>
+</body>
+</html>

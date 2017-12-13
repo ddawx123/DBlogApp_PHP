@@ -45,4 +45,12 @@
             </section>
           </div>
         </div>
+        <script type="text/javascript" language="javascript" charset="UTF-8">
+        document.onkeydown = function(event) {
+          var enterHandler = event || window.event || arguments.callee.caller.arguments[0];
+          if (enterHandler && enterHandler.keyCode == 13) {
+            postLogin();
+          }
+        };
+        </script>
         
