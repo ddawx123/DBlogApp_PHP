@@ -43,9 +43,7 @@ class Tpl {
         if (!isset($_REQUEST['c'])) {
             self::Load(
                 array(
-                    'header.html',
-                    'home.html',
-                    'footer.html'
+                    'home.html'
                 )
             );
         }
@@ -106,9 +104,7 @@ class Tpl {
                 case 'index':
                 self::Load(
                     array(
-                        'header.html',
-                        'home.html',
-                        'footer.html'
+                        'home.html'
                     )
                 );
                 break;
