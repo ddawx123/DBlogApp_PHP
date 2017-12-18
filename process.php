@@ -28,7 +28,7 @@ else {
         ),
         'buildTime' =>  date('YmdHis',time())
     );
-    $result = file_put_contents(APP_PATH.'data/config.json', json_encode($config));
+    $result = @file_put_contents(APP_PATH.'data/config.json', json_encode($config));
     if (!$result) {
         $arr = array(
             'code'  =>  500,
