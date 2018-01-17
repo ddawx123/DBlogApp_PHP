@@ -4,7 +4,7 @@
  * @package DingStudio/BlogAPP
  * @subpackage UeditorLibrary
  * @author David Ding
- * @copyright 2012-2017 DingStudio All Rights Reserved
+ * @copyright 2012-2018 DingStudio All Rights Reserved
  */
 
 class Ueditor {

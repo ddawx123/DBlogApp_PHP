@@ -5,7 +5,7 @@
  * @package DingStudio/BlogAPP
  * @subpackage APILibrary
  * @author David Ding
- * @copyright 2012-2017 DingStudio All Rights Reserved
+ * @copyright 2012-2018 DingStudio All Rights Reserved
  */
 
 require_once(APP_PATH.'library/database.class.php');

@@ -4,7 +4,7 @@
  * @package DingStudio/BlogAPP
  * @subpackage BaseLibrary
  * @author David Ding
- * @copyright 2012-2017 DingStudio All Rights Reserved
+ * @copyright 2012-2018 DingStudio All Rights Reserved
  */
 
 class Base {
@@ -16,6 +16,10 @@ class Base {
      */
     private function __construct() {
         header('Product: DingStudio Cloud Platform');
+        //时区修改//
+        define('TimeZone','Asia/Shanghai'); //如果在海外运行请修改时区
+        //时区修改//
+        date_default_timezone_set(constant('TimeZone'));
         $this->checkConf(); //开箱即用拦截器（OOBE）
         if (!defined('APP_PATH')) { //判断APP_PATH常量是否在入口文件正确定义
             header('Content-Type: text/plain; Charset=UTF-8');

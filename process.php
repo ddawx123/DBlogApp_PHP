@@ -1,6 +1,8 @@
 <?php
 // 初始化应用目录全局变量
 define('APP_PATH',dirname(__FILE__).'/');
+define('TimeZone','Asia/Shanghai'); //如果在海外运行请修改时区
+date_default_timezone_set(constant('TimeZone'));
 
 if (!isset($_POST['sqlsrv']) || !isset($_POST['sqlusr']) || !isset($_POST['sqlpwd']) || !isset($_POST['sqlmdb']) || !isset($_POST['blog_name']) || !isset($_POST['blog_description']) || !isset($_POST['blog_author'])) {
     $arr = array(

@@ -9,7 +9,7 @@
  * @package DingStudio/BlogAPP
  * @subpackage GlobalLibrary
  * @author David Ding
- * @copyright 2012-2017 DingStudio All Rights Reserved
+ * @copyright 2012-2018 DingStudio All Rights Reserved
  */
 
 $config = file_get_contents(APP_PATH.'data/config.json');
