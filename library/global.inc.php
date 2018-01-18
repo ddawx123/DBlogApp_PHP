@@ -12,6 +12,11 @@
  * @copyright 2012-2018 DingStudio All Rights Reserved
  */
 
+if (version_compare(PHP_VERSION, '5.4.0') < 0) {
+    header('Content-Type: text/plain; Charset=UTF-8');
+    die('PHP执行环境版本过低，当前版本: ' . PHP_VERSION . "。系统最低需求：PHP(5.4.0)，兼容最新PHP7！");
+}
+
 $config = file_get_contents(APP_PATH.'data/config.json');
 $config = json_decode($config);
 
@@ -24,11 +29,3 @@ $dcp = array(
     'blog_author'   =>  $config->bloginfo->blog_author,
     'rss_url'   =>  './api.php?action=getArticle&type=list'
 );
-/*
-$blog_keywords = '123';
-$blog_title = '12x3';
-$blog_desc = '1x4';
-$upTime = '2012';
-$blog_author = 'David Ding';
-
-$rss_url = './atom.xml';*/

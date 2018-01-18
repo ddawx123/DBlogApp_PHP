@@ -71,5 +71,5 @@ else {
 function out($data = array()) {
     header('Content-Type: application/json; Charset=UTF-8');
     array_push($data, array('requestId', sha1(date('YmdHis',time()))));
-    die(json_encode($data));
+    die(json_encode($data, JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 }
